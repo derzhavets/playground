@@ -7,7 +7,6 @@ import javax.swing.*;
 public class SimpleAnimation {
 	private int x;
 	private int y;
-	JFrame frame;
 	
 	public static void main(String[] args) {
 		SimpleAnimation sa = new SimpleAnimation();
@@ -23,7 +22,7 @@ public class SimpleAnimation {
 	}
 	
 	public void go() {
-		frame = new JFrame();
+		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 300);
 		DrawingPanel panel = new DrawingPanel();
