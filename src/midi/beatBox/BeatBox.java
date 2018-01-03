@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 import javax.sound.midi.*;
 import javax.swing.*;
@@ -50,6 +51,14 @@ public class BeatBox {
 		JButton downTempo = new JButton("Tempo Down");
 		downTempo.addActionListener(new MyDownTempoListener());
 		buttonBox.add(downTempo);
+		
+		JButton ser = new JButton("Serialize");
+		ser.addActionListener(new MySerializeListener());
+		buttonBox.add(ser);
+		
+		JButton deser = new JButton("De-Serialize");
+		deser.addActionListener(new MyDeserializeListener());
+		buttonBox.add(deser);
 		
 		Box nameBox = new Box(BoxLayout.Y_AXIS);
 		for (int i = 0; i < instrumentNames.length; i++) {
@@ -157,6 +166,58 @@ public class BeatBox {
 		public void actionPerformed(ActionEvent e) {
 			float tempoFactor = sequencer.getTempoFactor();
 			sequencer.setTempoFactor((float) (tempoFactor * .97));
+		}
+	}
+	
+	public class MySerializeListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			boolean[] checklist = new boolean[256];
+			
+			for (int i = 0; i < checklist.length; i++) {
+				JCheckBox check = (JCheckBox) checkboxList.get(i);
+				if (check.isSelected()) {
+					checklist[i] = true;
+				} else {
+					checklist[i] = false;
+				}
+			}
+			
+			try {
+				FileOutputStream fileStream = new FileOutputStream(new File("Checkbox.ser"));
+				ObjectOutputStream objStream = new ObjectOutputStream(fileStream);
+				objStream.writeObject(checklist);
+				objStream.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
+	public class MyDeserializeListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				FileInputStream fileStream = new FileInputStream(new File("Checkbox.ser"));
+				ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+				boolean[] checklist = (boolean[]) objectStream.readObject();
+				objectStream.close();
+				
+				for (int i = 0; i < checklist.length; i++) {
+					if (checklist[i]) {
+						checkboxList.get(i).setSelected(true);						
+					} else {
+						checkboxList.get(i).setSelected(false);
+					}
+				}
+				
+				sequencer.stop();
+				buildTrackAndStart();
+				
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
 		}
 	}
 	
