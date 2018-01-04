@@ -1,16 +1,16 @@
-package serverSockets;
+package sockets.adviceApp;
 
 import java.io.*;
 import java.net.*;
 import java.util.Random;
 
-public class SocketServer {
+public class AdviceServer {
 	private String[] advices = {"Go home", "Shave your legs", "Rest and Vest", "Don't do that", "Procrastinate",
 			"Check things", "Cast spell", "Ring the bells", "Push the button"};
 	
 	public void go() {
 		try {
-			ServerSocket serverSock = new ServerSocket(5000);
+			ServerSocket serverSock = new ServerSocket(4000);
 			
 			while (true) {
 				Socket sock = serverSock.accept();
@@ -31,7 +31,7 @@ public class SocketServer {
 	}
 	
 	public static void main(String[] args) {
-		SocketServer ss = new SocketServer();
+		AdviceServer ss = new AdviceServer();
 		ss.go();
 	}
 }

@@ -1,20 +1,19 @@
-package serverSockets;
+package sockets.adviceApp;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 
 import javax.swing.*;
 
-public class SocketClient {
+public class AdviceClient {
 	JTextArea display;
 	
 	public static void main(String[] args) {
-		SocketClient sc = new SocketClient();
+		AdviceClient sc = new AdviceClient();
 		sc.go();
 	}
 	
@@ -44,7 +43,7 @@ public class SocketClient {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				Socket sock = new Socket("127.0.0.1", 5000);
+				Socket sock = new Socket("127.0.0.1", 4000);
 				InputStreamReader input = new InputStreamReader(sock.getInputStream());
 				BufferedReader reader = new BufferedReader(input);
 				display.setText(reader.readLine());
